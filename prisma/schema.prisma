@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Appointments {
+  id             String    @id @default(uuid())
+  provider       Provider  @relation(fields: [providerId], references: [id])
+  providerId     String 
+  consumer       Consumer  @relation(fields: [consumerId], references: [id])
+  consumerId     String
+  date           String
+  timeTo         String
+  timeFrom       String
+  bookingThrough Json
+  priority       Json
+  isDeleted      Boolean   @default(false)
+  services       Service[]
+}
+
+model Provider {
+  id           String         @id @default(uuid())
+  name         Json?          @default("{\"ar\": \"\", \"en\": \"\"}")
+  isDeleted    Boolean        @default(false)
+  Appointments Appointments[]
+}
+
+model Consumer {
+  id           String         @id @default(uuid())
+  name         Json?          @default("{\"ar\": \"\", \"en\": \"\"}")
+  isDeleted    Boolean        @default(false)
+  Appointments Appointments[]
+}
+
+model Service {
+  id         String         @id @default(uuid())
+  name       Json?          @default("{\"ar\": \"\", \"en\": \"\"}")
+  isDeleted  Boolean        @default(false)
+  appoitment Appointments[]
+}
+
+// model User {
+//   id       String  @id @default(uuid())
+//   name     String
+//   age      Int     @default(0)
+//   isAdmin  Boolean
+//   priority Json?
+//   Posts    Post[]
+
+//   @@index([name ])
+// }
+
+// model Post {
+//   id        String   @id @default(uuid())
+//   rating    Decimal
+//   createdAt DateTime @default(now())
+//   updateAt  DateTime @updatedAt
+//   author    User     @relation(fields: [authorId], references: [id])
+//   authorId  String
+// }
