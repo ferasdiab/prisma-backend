@@ -57,22 +57,8 @@ model ServicePrice {
   price      Decimal
 }
 
-// model User {
-//   id       String  @id @default(uuid())
-//   name     String
-//   age      Int     @default(0)
-//   isAdmin  Boolean
-//   priority Json?
-//   Posts    Post[]
 
-//   @@index([name ])
-// }
 
-// model Post {
-//   id        String   @id @default(uuid())
-//   rating    Decimal
-//   createdAt DateTime @default(now())
-//   updateAt  DateTime @updatedAt
-//   author    User     @relation(fields: [authorId], references: [id])
-//   authorId  String
-// }
+// npx prisma migrate dev --name <migration-name>
+
+//  npx  prisma  generate
