@@ -19,6 +19,21 @@ export const createServicePrice = async (req: Request, res: Response) => {
   }
 };
 
+export const updateServicePrice = async (req: Request, res: Response) => {
+  try {
+    const { id, price } = req.body;
+    const servicePrice = await prisma.servicePrice.update({
+      where: { id: id },
+      data: {
+        price,
+      },
+    });
+    res.status(200).json(servicePrice);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
 export const getServicePrice = async (req: Request, res: Response) => {
   try {
     const servicePrice = await prisma.servicePrice.findMany({
