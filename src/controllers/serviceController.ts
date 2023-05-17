@@ -22,12 +22,24 @@ export const getservices = async (req: Request, res: Response) => {
     const services = await prisma.service.findMany({
       where: {
         isDeleted: false,
+        appoitment: {
+          some: { isDeleted: false },
+        },
       },
       include: {
         appoitment: true,
       },
     });
-    res.status(200).json(services);
+
+
+    const updatedServices = services.map((service) => {
+      const filteredAppointments = service.appoitment.filter(
+        (appointment) => !appointment.isDeleted
+      );
+      return { ...service, appoitment: filteredAppointments };
+    });
+
+    res.status(200).json(updatedServices);
   } catch (error) {
     res.status(500).json({ error: error });
   }
