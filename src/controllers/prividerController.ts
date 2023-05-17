@@ -26,6 +26,11 @@ export const getProviders = async (req: Request, res: Response) => {
       },
       include: {
         Appointments: true,
+        ServicePrice: {
+          include: {
+            service: true,
+          },
+        },
       },
     });
     res.status(200).json(providers);

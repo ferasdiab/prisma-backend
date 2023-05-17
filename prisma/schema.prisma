@@ -55,9 +55,8 @@ model ServicePrice {
   service    Service  @relation(fields: [serviceId], references: [id])
   serviceId  String
   price      Decimal
+  isDeleted  Boolean  @default(false)
 }
-
-
 
 // npx prisma migrate dev --name <migration-name>
 

@@ -28,9 +28,13 @@ export const getservices = async (req: Request, res: Response) => {
       },
       include: {
         appoitment: true,
+        ServicePrice: {
+          include: {
+            privider: true,
+          },
+        },
       },
     });
-
 
     const updatedServices = services.map((service) => {
       const filteredAppointments = service.appoitment.filter(
