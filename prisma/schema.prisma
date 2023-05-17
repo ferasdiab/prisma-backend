@@ -58,6 +58,8 @@ model ServicePrice {
   isDeleted  Boolean  @default(false)
 }
 
+
+
 // npx prisma migrate dev --name <migration-name>
 
 //  npx  prisma  generate

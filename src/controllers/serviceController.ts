@@ -22,9 +22,6 @@ export const getservices = async (req: Request, res: Response) => {
     const services = await prisma.service.findMany({
       where: {
         isDeleted: false,
-        appoitment: {
-          some: { isDeleted: false },
-        },
       },
       include: {
         appoitment: true,
