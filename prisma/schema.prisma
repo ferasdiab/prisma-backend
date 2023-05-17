@@ -13,7 +13,7 @@ datasource db {
 model Appointments {
   id             String    @id @default(uuid())
   provider       Provider  @relation(fields: [providerId], references: [id])
-  providerId     String 
+  providerId     String
   consumer       Consumer  @relation(fields: [consumerId], references: [id])
   consumerId     String
   date           String
@@ -30,6 +30,7 @@ model Provider {
   name         Json?          @default("{\"ar\": \"\", \"en\": \"\"}")
   isDeleted    Boolean        @default(false)
   Appointments Appointments[]
+  ServicePrice ServicePrice[]
 }
 
 model Consumer {
@@ -40,10 +41,20 @@ model Consumer {
 }
 
 model Service {
-  id         String         @id @default(uuid())
-  name       Json?          @default("{\"ar\": \"\", \"en\": \"\"}")
-  isDeleted  Boolean        @default(false)
-  appoitment Appointments[]
+  id           String         @id @default(uuid())
+  name         Json?          @default("{\"ar\": \"\", \"en\": \"\"}")
+  isDeleted    Boolean        @default(false)
+  appoitment   Appointments[]
+  ServicePrice ServicePrice[]
+}
+
+model ServicePrice {
+  id         String   @id @default(uuid())
+  privider   Provider @relation(fields: [providerId], references: [id])
+  providerId String
+  service    Service  @relation(fields: [serviceId], references: [id])
+  serviceId  String
+  price      Decimal
 }
 
 // model User {
