@@ -95,7 +95,7 @@ export const deleteAppointment = async (req: Request, res: Response) => {
 export const getAppointments = async (req: Request, res: Response) => {
   try {
     // Your logic to fetch users from the database using Prisma
-    const { id, consumerId, serviceId } = req.body;
+    const { id, consumerId, serviceId, limit, page } = req.body;
     let whereCondition: Prisma.AppointmentsWhereInput = { isDeleted: false };
     if (id) {
       whereCondition = { ...whereCondition, id };
@@ -118,15 +118,36 @@ export const getAppointments = async (req: Request, res: Response) => {
         },
       };
     }
-    const appointments = await prisma.appointments.findMany({
+
+    let appointmentsQuery: Prisma.AppointmentsFindManyArgs = {
       where: whereCondition,
       include: {
         consumer: true,
         provider: true,
         services: true,
       },
-    });
-    res.status(200).json({ count: appointments.length, rows: appointments });
+    };
+
+    //// end  of  data filter
+
+    if (limit && page) {
+      const skip = (page - 1) * limit;
+      const take = limit;
+
+      appointmentsQuery = {
+        ...appointmentsQuery,
+        skip,
+        take,
+      };
+    }
+
+    const appointments = await prisma.appointments.findMany(appointmentsQuery);
+
+    let totalItems = 0;
+    totalItems = await prisma.appointments.count({ where: whereCondition });
+    const totalPages = Math.ceil(totalItems / limit || 1);
+
+    res.status(200).json({ totalItems, totalPages, rows: appointments });
   } catch (error) {
     res.status(500).json({ error: error });
   }
