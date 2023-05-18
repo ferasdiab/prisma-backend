@@ -47,7 +47,11 @@ export const getPackage = async (req: Request, res: Response) => {
         // service: true,
         services: {
           include: {
-            service: true,
+            service: {
+              include: {
+                ServicePrice: true,
+              },
+            },
           },
         },
         ConsumerBasket: true,

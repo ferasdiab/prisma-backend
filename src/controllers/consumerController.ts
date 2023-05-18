@@ -29,7 +29,11 @@ export const getConsumers = async (req: Request, res: Response) => {
         ConsumerBasket: {
           include: {
             Package: true,
-            ConsumerBasketService: true,
+            ConsumerBasketService: {
+              include: {
+                Service: true,
+              },
+            },
           },
         },
       },
