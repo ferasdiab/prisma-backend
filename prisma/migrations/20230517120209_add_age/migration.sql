@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Consumer` ADD COLUMN `age` DECIMAL(65, 30) NOT NULL DEFAULT 25;

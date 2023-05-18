@@ -34,18 +34,22 @@ model Provider {
 }
 
 model Consumer {
-  id           String         @id @default(uuid())
-  name         Json?          @default("{\"ar\": \"\", \"en\": \"\"}")
-  isDeleted    Boolean        @default(false)
-  Appointments Appointments[]
+  id             String           @id @default(uuid())
+  name           Json?            @default("{\"ar\": \"\", \"en\": \"\"}")
+  isDeleted      Boolean          @default(false)
+  age            Int              @default(22)
+  Appointments   Appointments[]
+  ConsumerBasket ConsumerBasket[]
 }
 
 model Service {
-  id           String         @id @default(uuid())
-  name         Json?          @default("{\"ar\": \"\", \"en\": \"\"}")
-  isDeleted    Boolean        @default(false)
-  appoitment   Appointments[]
-  ServicePrice ServicePrice[]
+  id                    String                  @id @default(uuid())
+  name                  Json?                   @default("{\"ar\": \"\", \"en\": \"\"}")
+  isDeleted             Boolean                 @default(false)
+  appoitment            Appointments[]
+  ServicePrice          ServicePrice[]
+  package               Package[]
+  ConsumerBasketService ConsumerBasketService[]
 }
 
 model ServicePrice {
@@ -58,7 +62,31 @@ model ServicePrice {
   isDeleted  Boolean  @default(false)
 }
 
+model Package {
+  id             String           @id @default(uuid())
+  name           String           @default("")
+  service        Service[]
+  totalPrice     Decimal          @default(0)
+  ConsumerBasket ConsumerBasket[]
+}
 
+model ConsumerBasket {
+  id                    String                  @id @default(uuid())
+  consumer              Consumer                @relation(fields: [consumerId], references: [id])
+  consumerId            String
+  Package               Package?                @relation(fields: [packageId], references: [id])
+  packageId             String?
+  ConsumerBasketService ConsumerBasketService[]
+}
+
+model ConsumerBasketService {
+  id               Int            @id @default(autoincrement())
+  consumerBasket   ConsumerBasket @relation(fields: [consumerBasketId], references: [id])
+  consumerBasketId String
+  used             Boolean        @default(false)
+  Service          Service?       @relation(fields: [serviceId], references: [id])
+  serviceId        String?
+}
 
 // npx prisma migrate dev --name <migration-name>
 
