@@ -26,6 +26,12 @@ export const getConsumers = async (req: Request, res: Response) => {
       },
       include: {
         Appointments: true,
+        ConsumerBasket: {
+          include: {
+            Package: true,
+            ConsumerBasketService: true,
+          },
+        },
       },
     });
     res.status(200).json(users);
