@@ -40,6 +40,7 @@ export const getConsumersService = async (name: string) => {
           },
         },
       },
+      Attachment: true,
     },
   });
 

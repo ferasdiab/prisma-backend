@@ -31,6 +31,7 @@ model Provider {
   isDeleted    Boolean        @default(false)
   Appointments Appointments[]
   ServicePrice ServicePrice[]
+  Attachment   Attachment[]
 }
 
 model Consumer {
@@ -40,6 +41,7 @@ model Consumer {
   age            Int              @default(22)
   Appointments   Appointments[]
   ConsumerBasket ConsumerBasket[]
+  Attachment     Attachment[]
 }
 
 model Service {
@@ -50,6 +52,7 @@ model Service {
   ServicePrice          ServicePrice[]
   ConsumerBasketService ConsumerBasketService[]
   ServiceInPackage      ServiceInPackage[]
+  Attachment            Attachment[]
 }
 
 model ServicePrice {
@@ -101,7 +104,18 @@ model ConsumerBasketService {
   isDeleted        Boolean        @default(false)
 }
 
+model Attachment {
+  id         String    @id @default(uuid())
+  url        String
+  name       String?
+  consumer   Consumer? @relation(fields: [consumerId], references: [id])
+  consumerId String?
+  provider   Provider? @relation(fields: [providerId], references: [id])
+  providerId String?
+  service    Service?  @relation(fields: [serviceId], references: [id])
+  serviceId  String?
+}
+
 // npx prisma migrate dev --name <migration-name>
 
 //  npx  prisma  generate
-  

@@ -25,6 +25,7 @@ export const getProviders = async (req: Request, res: Response) => {
         isDeleted: false,
       },
       include: {
+        Attachment: true,
         Appointments: true,
         ServicePrice: {
           include: {
