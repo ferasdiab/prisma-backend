@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import prisma from "../../script";
-import { Prisma } from "@prisma/client";
 import {
   createAppointmentBusiness,
   getAppointmentsBusiness,
