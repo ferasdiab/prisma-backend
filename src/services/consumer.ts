@@ -13,7 +13,11 @@ export const createConsumerService = async (name: string) => {
   }
 };
 
-export const getConsumersService = async (name: string) => {
+export const getConsumersService = async (
+  name: string,
+  ageFrom: number,
+  ageTo: number
+) => {
   let whereCondition: Prisma.ConsumerWhereInput = { isDeleted: false };
   if (name) {
     whereCondition = {
@@ -25,7 +29,30 @@ export const getConsumersService = async (name: string) => {
       },
     };
   }
-
+  if (ageFrom || ageTo) {
+    if (ageFrom && ageTo)
+      whereCondition = {
+        ...whereCondition,
+        age: {
+          gte: ageFrom,
+          lte: ageTo,
+        },
+      };
+    else if (ageFrom)
+      whereCondition = {
+        ...whereCondition,
+        age: {
+          gte: ageFrom,
+        },
+      };
+    else
+      whereCondition = {
+        ...whereCondition,
+        age: {
+          lte: ageTo,
+        },
+      };
+  }
   const users = await prisma.consumer.findMany({
     where: whereCondition,
     include: {
